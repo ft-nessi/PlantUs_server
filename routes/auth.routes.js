@@ -63,6 +63,7 @@ router.post("/login/user", async (req, res, next) => {
 // Sign up for Ranger 
 router.post("/signup/ranger", async (req, res, next) => {
     try{
+        console.log(req.body);
         const {username, email, password } = req.body
         const rangerExists = await Ranger.findOne({username});
 
