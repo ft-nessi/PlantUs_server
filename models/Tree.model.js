@@ -29,6 +29,6 @@ const treeSchema = new Schema(
   }
 );
 
-const Ranger = model("Ranger", rangerSchema);
+const Tree = model("tree", treeSchema);
 
-module.exports = Ranger;
+module.exports = Tree;

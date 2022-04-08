@@ -1,5 +1,5 @@
 const rangerIsLogedIn = (req, res, next) => {
-    if(!req.session.currentRanger) {
+    if(req.session.currentRanger) {
         return next();
     }
     return res

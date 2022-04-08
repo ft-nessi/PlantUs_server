@@ -24,6 +24,6 @@ const rangerSchema = new Schema(
   }
 );
 
-const Ranger = model("Ranger", rangerSchema);
+const Ranger = model("ranger", rangerSchema);
 
 module.exports = Ranger;
