@@ -4,7 +4,7 @@ const Ranger = require("../models/Ranger.model");
 const bcrypt = require("bcrypt");
 
 // Sign up for User
-router.post("/signup/user", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
     console.log(req.body);
