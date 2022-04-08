@@ -24,11 +24,13 @@ router.post("/signup/user", async (req, res, next) => {
       email,
       password: passwordHash,
     };
-    req.session.currentUser = user;
-    console.log("User session exists?", req.session.currentUser);
-    await User.create(user);
 
-    return res.json({ message: "Successfully signed up user" });
+    const userInDb = await User.create(user);
+
+    req.session.currentUser = {_id: userInDb._id, username, email,};
+    console.log("User session exists?", req.session.currentUser);
+
+    return res.json({ message: "Successfully signed up user", user: req.session.currentUser });
   } catch (err) {
     console.error("Error if user exists from auth.routes", err);
     return res

@@ -7,16 +7,17 @@ const rangerSchema = new Schema(
       type: String,
       // unique: true -> Ideally, should be unique, but its up to you
     },
+    isUser: true,
     email: {
-        type: String,
-        unique: true,
-        required: true,
-      },
-      password: {
-        type: String,
+      type: String,
+      unique: true,
       required: true,
-      },
-      motivation: String
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    motivation: String,
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
