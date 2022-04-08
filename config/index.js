@@ -30,9 +30,7 @@ module.exports = (app) => {
       httpOnly: true,
       maxAge: 600000, // 60 * 1000 ms * 10 === 10 min
     },
-  }
-
-  ))
+  }));
 
   // controls a very specific header to pass headers from the frontend
   app.use(
