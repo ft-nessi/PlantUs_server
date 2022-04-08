@@ -7,6 +7,17 @@ const treeSchema = new Schema(
       type: String,
       default: 'New tree'
     },
+    ownerId: {
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      unique: true
+    },
+    rangerId: {
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: "ranger",
+      unique: true,
+      required: true
+    },
     kind: {
         type: String,
         enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"]

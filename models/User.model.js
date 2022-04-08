@@ -18,7 +18,7 @@ const userSchema = new Schema(
       type: String,
     required: true,
     },
-    motivation: String
+    motivation: String,
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
