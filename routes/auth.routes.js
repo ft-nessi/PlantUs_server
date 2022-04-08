@@ -92,31 +92,31 @@ router.post("/signup/ranger", async (req, res, next) => {
 })
 
 
-// //Login for Ranger
-// router.post("/login/ranger", async (res, req, next) => {
-//     try{
-//         console.log("line 90 from auth.routes on server", req.body);
-//         const { email, password } = req.body;
-//         const ranger = await Ranger.findOne({email});
+//Login for Ranger
+router.post("/login/ranger", async (res, req, next) => {
+    try{
+        console.log("line 90 from auth.routes on server", req.body);
+        const { email, password } = req.body;
+        const ranger = await Ranger.findOne({email});
 
-//         if (!ranger) {
-//             throw Error();
-//         };
-//         const checkedPassword = await bcrypt.compare(password, ranger.password);
+        if (!ranger) {
+            throw Error();
+        };
+        const checkedPassword = await bcrypt.compare(password, ranger.password);
 
-//         if(!checkedPassword) {
-//             throw Error()
-//         }
-//         req.session.currentRanger = ranger;
-//         console.log("Ranger session exists?", req.session.currentRanger); 
-//         return res.json({ message: "Successfully logged in!", user: sessionUser });
+        if(!checkedPassword) {
+            throw Error()
+        }
+        req.session.currentRanger = ranger;
+        console.log("Ranger session exists?", req.session.currentRanger); 
+        return res.json({ message: "Successfully logged in!", user: sessionUser });
 
-//     } catch(err) {
-//         console.error("Error from line 82 in index.routes", err);
-//         return res.status(400).json({errorMessage: "Email or password don't match"});
-//     }
+    } catch(err) {
+        console.error("Error from line 82 in index.routes", err);
+        return res.status(400).json({errorMessage: "Email or password don't match"});
+    }
 
-// })
+})
 
 
 module.exports = router;

@@ -5,11 +5,22 @@ const treeSchema = new Schema(
   {
     treename: {
       type: String,
+      default: 'New tree'
     },
     kind: {
         type: String,
-        enum: ["Buche", "Eiche", "Fichte", "Ahorn"]
+        enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"]
     },
+    location:{
+      type: {
+        type: String, 
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }},
     plantedDate: Date,
   },
   {
