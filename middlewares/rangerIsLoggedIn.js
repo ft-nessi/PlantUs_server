@@ -1,5 +1,5 @@
-const rangerIsLogedIn = (req, res, next) => {
-    if(req.session.currentRanger) {
+const rangerIsLoggedIn = (req, res, next) => {
+    if(req.session.currentUser.isUser === false) {
         return next();
     }
     return res
@@ -7,4 +7,4 @@ const rangerIsLogedIn = (req, res, next) => {
       .json({ errorMessage: "Ranger has to be logged in to view this page" });
   };
    
-  module.exports = rangerIsLogedIn;
+  module.exports = rangerIsLoggedIn

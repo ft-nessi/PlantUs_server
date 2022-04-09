@@ -1,27 +1,43 @@
 const router = require("express").Router();
 const Ranger = require("../models/Ranger.model");
 const Tree = require("../models/Tree.model");
-const rangerIsLogedIn = require ("../middlewares/rangerIsLogedIn.js");
+const rangerIsLoggedIn = require ("../middlewares/rangerIsLogedIn.js");
 
-// router.get("/ranger/trees", rangerIsLogedIn, async (req,res, next)=> {
-//     try{
-//         const trees = await
 
-//     }catch(err){
-//         res.status(400).json({errorMessage: "Error in fetching todos from server! " + err})
-//     }
-// })
+router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
 
-router.post("/logout/ranger", rangerIsLogedIn, (req, res, next) => {
-    console.log("Do I logout?");
-  
-    req.session.destroy((err) => {
-      if (err) {
-        next(err);
-      }
-      return res.json({ message: "Successfully logged out!" });
-    });
-  });
+    // gibt es einen Baum mit der location?
+    // wenn es ihn nicht gibt, dann lege ihn an und sende das object wieder
+    // zurück
+    //
+    // res.json({tree})
+    
+    } )
+
+outer.get("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
+
+// finde alle Bäume mit der Id des rangers
+//
+// res.json({[trees]})
+
+} )
+
+
+router.put("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
+
+    // finde den Baum mit der Id und update ihn
+    //
+    // res.json({tree})
+    
+ } )
+
+ router.delete("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
+
+    // finde den Baum mit der Id und lösche ihn
+    //
+    // res.json({tree})
+    
+ } )
 
 
 module.exports = router;
