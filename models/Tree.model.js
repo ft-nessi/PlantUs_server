@@ -8,15 +8,15 @@ const treeSchema = new Schema(
       default: 'New tree'
     },
     ownerId: {
-      type:  mongoose.Schema.Types.ObjectId,
+      type:  Schema.Types.ObjectId,
       ref: "user",
-      unique: true
     },
     rangerId: {
-      type:  mongoose.Schema.Types.ObjectId,
+      type:  Schema.Types.ObjectId,
       ref: "ranger",
-      unique: true,
-      required: true
+      index: true,
+      required: true,
+      sparse: true
     },
     kind: {
         type: String,
