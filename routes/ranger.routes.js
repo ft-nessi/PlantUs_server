@@ -1,19 +1,20 @@
 const router = require("express").Router();
 const Ranger = require("../models/Ranger.model");
 const Tree = require("../models/Tree.model");
-const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn.js");
+const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
 
 router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
   console.log("HeyBye", req.body);
+  const { kind, coordinatesX, coordinatesY } = req.body;
+  console.log("Should create a new tree with:", kind, coordinatesX, coordinatesY);
   try {
-    const { kind, coordinatesX, coordinatesY } = req.body;
-    // const locationExists = await Tree.findOne( {"location.coordinatesX": coordinatesX}, {"location.coordinatesY": coordinatesY} );
+    const locationExists = await Tree.findOne( {"location.coordinatesX": coordinatesX, "location.coordinatesY": coordinatesY} );
+    // const locationExists = await Tree.findOne( {location: {coordinatesX, coordinatesY}} );
 
-    // if(locationExists) {
-    //     throw Error("This location already exists! Please choose other coordinates")
-    // }
-
-    console.log("Should create a new tree with:", treename, kind, location);
+    console.log("LocationExsits?", locationExists)
+    if(locationExists) {
+        throw Error("This location already exists! Please choose other coordinates")
+    }
 
     const newTree = {
       treename: "New tree",
