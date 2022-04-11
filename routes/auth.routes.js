@@ -2,7 +2,8 @@ const router = require("express").Router();
 const User = require("../models/User.model");
 const Ranger = require("../models/Ranger.model");
 const bcrypt = require("bcrypt");
-const userIsLoggedIn = require("../middlewares/userIsLoggedIn")
+const userIsLoggedIn = require("../middlewares/userIsLoggedIn");
+const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
 
 // Sign up
 router.post("/signup", async (req, res, next) => {
@@ -29,7 +30,7 @@ router.post("/signup", async (req, res, next) => {
       email,
       password: passwordHash,
     };
-    console.log("Bye", user, isUser)
+    console.log("Bye", user, isUser);
     const userInDb = await (isUser ? User.create(user) : Ranger.create(user));
 
     req.session.currentUser = { _id: userInDb._id, isUser, username, email };
@@ -52,25 +53,31 @@ router.post("/login", async (req, res, next) => {
   try {
     console.log("line 65 from auth.routes on server", req.body);
     const { isUser, email, password } = req.body;
-    const user = await (isUser ? User.findOne({ email }) : Ranger.findOne({ email }))
+    const user = await (isUser
+      ? User.findOne({ email })
+      : Ranger.findOne({ email }));
     if (!user) {
-        throw Error();
+      throw Error();
     }
     const checkedPassword = await bcrypt.compare(password, user.password);
-    
+
     if (!checkedPassword) {
-        throw Error();
+      throw Error();
     }
-    
+
     const userFromDb = user;
-    req.session.currentUser = { _id: userFromDb._id, isUser, username: userFromDb.username, email };
+    req.session.currentUser = {
+      _id: userFromDb._id,
+      isUser,
+      username: userFromDb.username,
+      email,
+    };
     console.log("User session exist?", req.session.currentUser);
 
     return res.json({
       message: "Successfully logged in!",
       user: req.session.currentUser,
     });
-
   } catch (err) {
     console.error("Error from line 82 in auth.routes", err);
     return res
@@ -80,15 +87,15 @@ router.post("/login", async (req, res, next) => {
 });
 
 // Logout
-router.post("/logout", userIsLoggedIn, (req, res, next) => {
-    console.log("Do I logout?");
-  
-    req.session.destroy((err) => {
-      if (err) {
-        next(err);
-      }
-      return res.json({ message: "Successfully logged out!" });
-    });
+router.post("/logout", (req, res, next) => {
+  console.log("Do I logout?");
+
+  req.session.destroy((err) => {
+    if (err) {
+      next(err);
+    }
+    return res.json({ message: "Successfully logged out!" });
   });
+});
 
 module.exports = router;
