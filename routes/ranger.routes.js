@@ -4,25 +4,29 @@ const Tree = require("../models/Tree.model");
 const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn.js");
 
 router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
+  console.log(req.body);
   try {
-    console.log(req.body);
-    const { treename, kind, location } = req.body;
-    const locationExists = await Tree.findOne({ location });
+    const { kind, coordinatesX, coordinatesY } = req.body;
+    // const locationExists = await Tree.findOne({ location: location.coordinatesX, location: location.coordinatesY });
 
-    if(locationExists) {
-        throw Error("This location already exists! Please choose other coordinates")
-    }
+    // if(locationExists) {
+    //     throw Error("This location already exists! Please choose other coordinates")
+    // }
 
-    console.log("Should create a new tree with:", treename, kind, location);
+    // console.log("Should create a new tree with:", treename, kind, location);
 
-    const newTree = new Tree({
-        treename,
+    const newTree = {
+        treename: "New tree",
         kind,
-        location,
+        location: {
+          type: "Point",
+          coordinatesX,
+          coordinatesY
+        },
         rangerId: req.session.currentUser._id
-    })
-    await newTree.save()
+    }
     console.log("This is the tree", newTree);
+    await Tree.create(newTree);
     res.json({message:"Tree was successfully added to the db", tree: newTree});
 
   } catch(err) {

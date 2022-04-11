@@ -15,7 +15,7 @@ const treeSchema = new Schema(
       type:  Schema.Types.ObjectId,
       ref: "ranger",
       index: true,
-      required: true,
+      // required: true,
       sparse: true
     },
     kind: {
@@ -28,8 +28,12 @@ const treeSchema = new Schema(
         enum: ["Point"],
         required: true,
       },
-      coordinates: {
-        type: [Number],
+      coordinatesX: {
+        type: String,
+        required: true
+      },
+      coordinatesY: {
+        type: String,
         required: true
       }},
     plantedDate: Date,
