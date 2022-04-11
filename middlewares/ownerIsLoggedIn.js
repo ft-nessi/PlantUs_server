@@ -1,4 +1,5 @@
 const ownerIsLoggedIn = (req, res, next) => {
+    // To Do: Add Roles to the Usermodel
   if (req.session.currentUser.isUser === true) {
     return next();
   }

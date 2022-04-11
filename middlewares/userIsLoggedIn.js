@@ -1,5 +1,5 @@
 const userIsLoggedIn = (req, res, next) => {
-    if (req.session.currentUser === true) {
+    if (req.session.currentUser) {
       return next();
     }
     return res
