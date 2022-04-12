@@ -19,7 +19,7 @@ const treeSchema = new Schema(
       // sparse: true,
     },
     //chosenKinds
-    kinds: {
+    kind: {
       type: String,
       enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"],
     },

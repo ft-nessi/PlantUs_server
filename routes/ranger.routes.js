@@ -6,12 +6,12 @@ const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
 
 
 router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
-  console.log("HeyBye", req.body);
+  // console.log("HeyBye", req.body);
   const { kind, coordinatesX, coordinatesY } = req.body;
-  console.log("Should create a new tree with:", kind, coordinatesX, coordinatesY);
+  // console.log("Should create a new tree with:", kind, coordinatesX, coordinatesY);
   try {
     const locationExists = await Tree.findOne( {"location.coordinatesX": coordinatesX, "location.coordinatesY": coordinatesY} );
-    console.log("LocationExsits?", locationExists)
+    // console.log("LocationExsits?", locationExists)
     if(locationExists) {
         throw Error("This location already exists! Please choose other coordinates")
     }
@@ -26,7 +26,7 @@ router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
       },
       rangerId: req.session.currentUser._id
     };
-    
+    console.log(newTree);
     await Tree.create(newTree);
     res.json({
       message: "Tree was successfully added to the db",
@@ -70,7 +70,8 @@ router.put("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
         const {_id, treename, rangerId, kind, location} = req.body;
         const locationExists = await Tree.findOne( {location} );
     console.log("LocationExsits?", locationExists)
-    if(locationExists) {
+
+    if(locationExists && _id !== locationExists._id.toString()) {
         throw Error("This location already exists! Please choose other coordinates")
     }
 
@@ -78,7 +79,8 @@ router.put("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
             throw Error("Please provide a valid _id in your request")
         }
 
-        const updatedTree = await Tree.findByIdAndUpdate( _id, {treename, rangerId, kind, location});
+        await Tree.findByIdAndUpdate( _id, {treename, rangerId, kind, location});
+        const updatedTree = await Tree.findOne({_id});
 
         res.json({message:"Successfully updated todo!", update: updatedTree})
 

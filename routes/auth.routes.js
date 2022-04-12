@@ -6,6 +6,15 @@ const userIsLoggedIn = require("../middlewares/userIsLoggedIn");
 const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
 
 // Sign up
+
+router.get("/user", async (req, res, next) => {
+  if (req.session.currentUser) {
+    res.status(200).json({user: req.session.currentUser})
+  } else {
+    res.status(401).json({messager: "Not logged in!"})
+  }
+})
+
 router.post("/signup", async (req, res, next) => {
   try {
     const { isUser, username, email, password } = req.body;
