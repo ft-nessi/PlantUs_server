@@ -5,37 +5,43 @@ const treeSchema = new Schema(
   {
     treename: {
       type: String,
-      default: 'New tree'
+      default: "New tree",
     },
     ownerId: {
-      type:  Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "user",
     },
     rangerId: {
-      type:  Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "ranger",
-      index: true,
+      // index: true,
       // required: true,
-      sparse: true
+      // sparse: true,
     },
-    kind: {
-        type: String,
-        enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"]
+    //chosenKinds
+    kinds: {
+      type: String,
+      enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"],
     },
-    location:{
+    // plantedKind: {
+    //   type: String,
+    //   enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"],
+    // },
+    location: {
       type: {
-        type: String, 
+        type: String,
         enum: ["Point"],
         required: true,
       },
       coordinatesX: {
         type: String,
-        required: true
+        required: true,
       },
       coordinatesY: {
         type: String,
-        required: true
-      }},
+        required: true,
+      },
+    },
     plantedDate: Date,
   },
   {
