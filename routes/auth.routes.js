@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
+const Tree = require("../models/Tree.model");
 const Ranger = require("../models/Ranger.model");
 const bcrypt = require("bcrypt");
 const userIsLoggedIn = require("../middlewares/userIsLoggedIn");
@@ -106,5 +107,19 @@ router.post("/logout", userIsLoggedIn, (req, res, next) => {
     return res.json({ message: "Successfully logged out!" });
   });
 });
+
+
+// get all trees for map on Homepage
+router.get("/alltrees", async (req, res, next) => {
+  try{
+    const trees = await Tree.find();
+      res.json({ trees });
+  }catch(err) {
+      res
+        .status(400)
+        .json({ errorMessage: "Error in fetching trees from server!" });
+  }
+})
+
 
 module.exports = router;

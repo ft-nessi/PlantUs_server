@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Ranger = require("../models/Ranger.model");
 const Tree = require("../models/Tree.model");
 const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
+const userIsLoggedIn = require("../middlewares/userIsLoggedIn");
 
 
 
@@ -37,7 +38,7 @@ router.post("/ranger/markedtrees", rangerIsLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/ranger/markedtrees/all", rangerIsLoggedIn, async (req, res, next) => {
+router.get("/ranger/markedtrees/all", userIsLoggedIn, async (req, res, next) => {
   try {
     const trees = await Tree.find();
     console.log("Hey this are the trees in line 21", trees);
