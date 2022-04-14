@@ -73,18 +73,20 @@ router.post("/login", async (req, res, next) => {
       throw Error();
     }
     const checkedPassword = await bcrypt.compare(password, user.password);
-
     if (!checkedPassword) {
       throw Error();
     }
-
+    // const findUserFromDb = await User.findById(req.session.currentUser._id)
     const userFromDb = user;
     req.session.currentUser = {
       _id: userFromDb._id,
       isUser,
       username: userFromDb.username,
       email,
+      imageUrl: userFromDb.imageUrl,
+      motivation: userFromDb.motivation
     };
+    console.log("dibibib", user)
     console.log("User session exist?", req.session.currentUser);
 
     return res.json({
