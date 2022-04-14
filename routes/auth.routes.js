@@ -34,6 +34,7 @@ router.post("/signup", async (req, res, next) => {
         "This User/Ranger already exists. Please choose another name."
       );
     }
+    console.log(req.body);
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -73,6 +74,7 @@ router.post("/login", async (req, res, next) => {
       throw Error();
     }
     const checkedPassword = await bcrypt.compare(password, user.password);
+    console.log(checkedPassword);
     if (!checkedPassword) {
       throw Error();
     }
