@@ -18,6 +18,7 @@ const rangerSchema = new Schema(
       required: true,
     },
     motivation: String,
+    imageUrl: String
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

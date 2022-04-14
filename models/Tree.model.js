@@ -21,7 +21,7 @@ const treeSchema = new Schema(
     //chosenKinds
     kind: {
       type: String,
-      enum: ["Spruce", "Oak", "Pine", "AhornEuropean beech", "Maple tree"],
+      enum: ["", "Spruce", "Oak", "Pine", "Maple tree"],
     },
     // plantedKind: {
     //   type: String,
