@@ -14,7 +14,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost/PlantUs_server";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/PlantUs_server";
 const helmet = require("helmet");
 
 // Middleware configuration
