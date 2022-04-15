@@ -5,19 +5,22 @@ const Ranger = require("../models/Ranger.model");
 const bcrypt = require("bcrypt");
 const userIsLoggedIn = require("../middlewares/userIsLoggedIn");
 const rangerIsLoggedIn = require("../middlewares/rangerIsLoggedIn");
-const uploader = require('../middlewares/cloudinary.config.js');
-
+const uploader = require("../middlewares/cloudinary.config.js");
+const userOrRanger = require("../common/userOrRanger");
 
 // Sign up
 
 router.get("/user", async (req, res, next) => {
   if (req.session.currentUser) {
-    const user = await User.findById(req.session.currentUser._id)
-    res.status(200).json({user})
+    const user = req.session.currentUser.isUser
+      ? await User.findById(req.session.currentUser._id)
+      : await Ranger.findById(req.session.currentUser._id);
+    console.log(req.session.currentUser._id, user);
+    res.status(200).json({ user });
   } else {
-    res.status(401).json({messager: "Not logged in!"})
+    res.status(401).json({ messager: "Not logged in!" });
   }
-})
+});
 
 router.post("/signup", async (req, res, next) => {
   try {
@@ -86,9 +89,9 @@ router.post("/login", async (req, res, next) => {
       username: userFromDb.username,
       email,
       imageUrl: userFromDb.imageUrl,
-      motivation: userFromDb.motivation
+      motivation: userFromDb.motivation,
     };
-    console.log("dibibib", user)
+    console.log("dibibib", user);
     console.log("User session exist?", req.session.currentUser);
 
     return res.json({
@@ -118,57 +121,66 @@ router.post("/logout", userIsLoggedIn, (req, res, next) => {
 //update motivation of user
 
 router.put("/updatemotivation", userIsLoggedIn, async (req, res, next) => {
-  try{
+  try {
     console.log(req.body);
-    const {motivation} = req.body;
+    const { motivation } = req.body;
 
-    await User.findByIdAndUpdate( req.session.currentUser._id, {motivation});
-    const updatedUser = await User.findById(req.session.currentUser._id);
-    console.log("hi updated user",updatedUser)
+    await userOrRanger(req.session.currentUser).findByIdAndUpdate(req.session.currentUser._id, { motivation });
+    const updatedUser = await userOrRanger(req.session.currentUser).findById(req.session.currentUser._id);
+    console.log("hi updated user", updatedUser);
 
-    res.json({message:"Successfully updated motivation!", updatedUser})
-
-}catch(err){
-    res.status(400).json({errorMessage: "Error in updating tree!" + err})
-}
+    res.json({ message: "Successfully updated motivation!", updatedUser });
+  } catch (err) {
+    res.status(400).json({ errorMessage: "Error in updating tree!" + err });
+  }
 });
 
 // route to upload a picture
 
-router.post('/upload', uploader.single("imageUrl"), async (req, res, next) => {
+router.post("/upload", uploader.single("imageUrl"), async (req, res, next) => {
   // the uploader.single() callback will send the file to cloudinary and get you and obj with the url in return
-  console.log('file is: ', req.file)
-  
+  console.log("file is: ", req.file);
+
   if (!req.file) {
-    console.log("there was an error uploading the file")
-    next(new Error('No file uploaded!'));
+    console.log("there was an error uploading the file");
+    next(new Error("No file uploaded!"));
     return;
   }
-  
+
   // You will get the image url in 'req.file.path'
   // Your code to store your url in your database should be here
-  try{
-    await User.findByIdAndUpdate(req.session.currentUser._id, {imageUrl: req.file.path})
-    const updatedUser = await User.findById(req.session.currentUser._id);
-  
-    res.status(200).json({message: "Profile image was successfully uploaded to the db", updatedUser})
+  try {
+    await userOrRanger(req.session.currentUser).findByIdAndUpdate(req.session.currentUser._id, {
+      imageUrl: req.file.path,
+    });
+    const updatedUser = await userOrRanger(req.session.currentUser).findById(req.session.currentUser._id);
 
-  }catch(err){
-    res.status(400).json({message: "There was an error while updating the image to the database", err })
+    res
+      .status(200)
+      .json({
+        message: "Profile image was successfully uploaded to the db",
+        updatedUser,
+      });
+  } catch (err) {
+    res
+      .status(400)
+      .json({
+        message: "There was an error while updating the image to the database",
+        err,
+      });
   }
-})
+});
 
 // get all trees for map on Homepage
 router.get("/alltrees", async (req, res, next) => {
-  try{
+  try {
     const trees = await Tree.find();
-      res.json({ trees });
-  }catch(err) {
-      res
-        .status(400)
-        .json({ errorMessage: "Error in fetching trees from server!" });
+    res.json({ trees });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ errorMessage: "Error in fetching trees from server!" });
   }
-})
-
+});
 
 module.exports = router;
